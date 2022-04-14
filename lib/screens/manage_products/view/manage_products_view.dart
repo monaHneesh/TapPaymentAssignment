@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'dart:convert';
 import 'package:products_app/core/helpers/page_builder.dart';
 import 'package:products_app/core/helpers/page_helper.dart';
@@ -36,6 +38,15 @@ class ManageProductsViewState extends State<ManageProductsView>
   void initState() {
     super.initState();
     if (widget.productList != null && widget.productList.isNotEmpty) {
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
+        Flushbar(
+          flushbarPosition: FlushbarPosition.TOP,
+          icon: Icon(Icons.check,color: Colors.green,),
+          message:
+          "Product added Succefully",
+          duration: Duration(seconds: 3),
+        ).show(context);
+      });
       setState(() {
         filteredList = widget.productList;
       });
@@ -120,6 +131,7 @@ class ManageProductsViewState extends State<ManageProductsView>
                 ? ListView.builder(
                     itemCount: filteredList.length,
                     shrinkWrap: true,
+                physics: AlwaysScrollableScrollPhysics(),
                     itemBuilder: (context, int index) {
                       return Padding(
                         padding: EdgeInsets.all(5),

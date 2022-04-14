@@ -45,10 +45,14 @@ class AddProductFormState extends State<AddProductForm> with PageHelper {
     return BlocBuilder<ManageProductBloc, ManageProductsState>(
         builder: (context, state) {
       return BlocListener<ManageProductBloc, ManageProductsState>(
-          listener: (context, state) {
-            if (state.success != null && state.success && !state.isSearchDone) {
+          listener: (context, state) async {
+            if (state.success != null && state.success ) {
               hideLoadingIndicator(context);
-              AppNavigation.navigateToPageWidget(context, ManageProductsView(productList: state.productsList,));
+              await Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) =>ManageProductsView(productList: state.productsList,),),
+              );
+
             }
             if (state.fail != null && state.fail) {
               hideLoadingIndicator(context);
